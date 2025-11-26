@@ -171,7 +171,7 @@ Generated figures will be saved locally to the `figures/` directory (git-ignored
 - **GSE122960**: scRNA-seq of IPF and healthy lung (GEO)
 - **GSE134692**: Bulk RNA-seq of IPF lung tissue
 - **GSE16846**: Bulk RNA-seq of bleomycin-induced pulmonary fibrosis (mouse)
-- **GSE32147**: Bulk RNA-seq of cigarette smoke-induced pulmonary fibrosis (rat)
+- **GSE32147**: Bulk RNA-seq of crystalline silica–induced pulmonary fibrosis (rat)
 
 ### Study-specific Data
 
