@@ -1,6 +1,6 @@
 conda_env: "py310"                          # scFEA environment name
-scfea_root: "/home/ly/miniconda3/envs/py310/lib/python3.10/site-packages/scFEA"   # adjust if different
-scfea_data_dir: "/home/ly/miniconda3/envs/py310/lib/python3.10/site-packages/scFEA/data"
+scfea_root: "/path/to/scFEA"                # adjust if different
+scfea_data_dir: "/path/to/scFEA/data"
 counts_file: "data/processed/scfea_input/ipf_at2_counts.csv"
 input_dir: "data/processed/scfea_input/ipf"
 test_file_name: "ipf_at2_counts.csv"

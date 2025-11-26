@@ -23,3 +23,6 @@ __pycache__/
 .Rhistory
 .RData
 .Rproj.user/
+
+# Local config backups (not tracked)
+config/*.local.yaml

@@ -87,6 +87,8 @@ pip install -r requirements.txt
 
 ### Step 1: Configure data paths
 
+Configs are anonymized. Fill in the placeholders in `config/paths.yaml`, `config/scfea_export_*.yaml`, and `config/scfea_run_*.yaml` with your local paths. (You can keep private copies as `config/*.local.yaml`; these are git-ignored.)
+
 Edit `config/paths.yaml` to set the correct paths to your raw data files:
 - scRNA-seq H5 files (GSE122960)
 - Bulk RNA-seq differential expression results

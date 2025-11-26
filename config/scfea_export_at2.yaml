@@ -1,4 +1,4 @@
-seurat_file: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq/sce_at2.rds"
+seurat_file: "/path/to/scRNAseq/sce_at2.rds"
 counts_output: "data/processed/scfea_input/at2_counts.csv"
 metadata_output: "data/processed/scfea_input/at2_metadata.csv"
 assay: "RNA"
