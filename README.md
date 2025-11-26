@@ -19,7 +19,7 @@ AT2_STAT6_HK2/
 +-- README.md                    # Project documentation
 +-- LICENSE                      # MIT License
 +-- environment.yml              # Conda environment for R 4.3
-+-- requirements.txt             # Python dependencies for scFEA
++-- requirements.txt             # Python dependencies for scFEA (py310)
 |
 +-- config/
 |   +-- paths.yaml               # Parameterized data paths
@@ -46,12 +46,12 @@ AT2_STAT6_HK2/
 +-- data/                        # Data directory
 |   +-- processed/               # Intermediate results (generated; large scFEA inputs/flux and .rds files are git-ignored)
 |
-+-- figures/                     # Output figures (generated)
-    +-- figure1/
-    +-- response_fig1_3/
-    +-- comment7_fig1/
-    +-- comment7_fig2/
-    +-- comment7_fig3/
++-- figures/                     # Output figures (generated locally; git-ignored)
+    +-- figure1/                 # Created by scripts
+    +-- response_fig1_3/         # Created by scripts
+    +-- comment7_fig1/           # Created by scripts
+    +-- comment7_fig2/           # Created by scripts
+    +-- comment7_fig3/           # Created by scripts
 ```
 
 ## Environment Setup
@@ -85,8 +85,8 @@ Or manually install R 4.3+ with the following packages:
 ### Python Environment (for scFEA)
 
 ```bash
-conda create -n py311 python=3.11
-conda activate py311
+conda create -n py310 python=3.10
+conda activate py310
 pip install -r requirements.txt
 ```
 
@@ -125,7 +125,7 @@ Rscript src/comment7_fig3/comment7_fig3.R
 
 ### Step 3: Outputs
 
-Generated figures will be saved to `figures/` directory:
+Generated figures will be saved locally to the `figures/` directory (git-ignored, regenerate with the scripts):
 
 | Figure | Description | Output Location |
 |--------|-------------|-----------------|
