@@ -1,5 +1,5 @@
 # Python dependencies for scFEA metabolic flux analysis
-# Install in py311 conda environment
+# Install in py310 conda environment (scFEA tested in py310)
 
 numpy>=1.24.0
 pandas>=2.0.0
