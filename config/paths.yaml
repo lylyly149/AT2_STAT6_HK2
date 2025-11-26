@@ -62,20 +62,7 @@ parameters:
   # Random seed for reproducibility
   seed: 123
 
-  # Quality control thresholds
-  qc:
-    min_features: 300
-    max_features: 5000
-    min_counts: 1000
-    max_mt_percent: 20
-
-  # Clustering parameters
-  clustering:
-    n_pcs: 11
-    resolution: 0.1
-    n_variable_features: 2000
-
-  # Statistical thresholds
+  # Statistical thresholds (used in DEG filtering)
   stats:
     padj_cutoff: 0.05
     pval_cutoff: 0.01
