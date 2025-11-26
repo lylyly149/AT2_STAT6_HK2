@@ -64,6 +64,8 @@ Or manually install R 4.3+ with the following packages:
 - AUCell
 - monocle
 - limma
+- edgeR
+- GEOquery
 - pheatmap
 - VennDiagram
 - biomaRt

@@ -12,16 +12,20 @@ dependencies:
   - r-reshape2
   - r-patchwork
   - r-ggrepel
-  - r-pheatmap
-  - r-yaml
-  - r-optparse
-  - r-hdf5r
-  - bioconductor-gsva
-  - bioconductor-aucell
-  - bioconductor-limma
-  - bioconductor-biomart
-  - bioconductor-monocle
   - r-venndiagram
   - r-pals
   - r-viridis
   - r-ggpubr
+  - r-yaml
+  - r-optparse
+  - r-hdf5r
+  - bioconductor-geoquery
+  - bioconductor-biobase
+  - bioconductor-biocgenerics
+  - bioconductor-limma
+  - bioconductor-edger
+  - bioconductor-biomart
+  - bioconductor-monocle
+  - bioconductor-gsva
+  - bioconductor-aucell
+  - r-pheatmap
