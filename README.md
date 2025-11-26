@@ -100,7 +100,35 @@ Edit `config/paths.yaml` to set the correct paths to your raw data files:
 - scFEA metabolic flux outputs
 - Metabolomics data
 
-### Step 2: Run all analyses
+### Step 2: Run scFEA (py310) — optional if you already have flux outputs
+
+1) Install scFEA into the py310 env (once):
+
+```bash
+conda activate py310
+pip install -r requirements.txt
+pip install git+https://github.com/changwn/scFEA.git
+```
+
+2) Export scFEA inputs from Seurat objects (R env):
+
+```bash
+conda activate r_4_3
+Rscript src/scfea/export_scfea_inputs.R --config config/scfea_export_at2.yaml
+Rscript src/scfea/export_scfea_inputs.R --config config/scfea_export_ipf.yaml
+```
+
+3) Run scFEA (py310):
+
+```bash
+conda activate py310
+python src/scfea/run_scfea.py --config config/scfea_run_at2.yaml
+python src/scfea/run_scfea.py --config config/scfea_run_ipf.yaml
+```
+
+Flux and balance outputs are written under `data/processed/scfea_flux_at2/` and `data/processed/scfea_flux_ipf_at2/` (git-ignored). Adjust paths in the YAML configs as needed.
+
+### Step 3: Run all analyses
 
 ```bash
 chmod +x scripts/run_all.sh
@@ -123,7 +151,7 @@ Rscript src/comment7_fig2/comment7_fig2.R
 Rscript src/comment7_fig3/comment7_fig3.R
 ```
 
-### Step 3: Outputs
+### Step 4: Outputs
 
 Generated figures will be saved locally to the `figures/` directory (git-ignored, regenerate with the scripts):
 
