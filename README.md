@@ -191,4 +191,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-For questions about the analysis code, please open an issue on GitHub or contact the corresponding contact.
+For questions about the analysis code, please contact the corresponding author.
