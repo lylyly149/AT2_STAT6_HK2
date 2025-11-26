@@ -112,11 +112,30 @@ fi
 echo ""
 
 # ==============================================================================
-# Run Response Figure 1,3 analysis (Venn diagrams)
+# Run Response Figure 1,3 analysis (Venn + bulk limma from raw counts / series)
 # ==============================================================================
 echo "=============================================="
 echo -e "${YELLOW}Running Response Fig 1,3: Venn diagrams${NC}"
 echo "=============================================="
+if [ -f "src/response_fig1_3/run_limma_gse134692_from_rawcounts.R" ]; then
+    Rscript src/response_fig1_3/run_limma_gse134692_from_rawcounts.R
+    echo -e "${GREEN}GSE134692 limma from raw counts completed.${NC}"
+else
+    echo -e "${RED}Warning: src/response_fig1_3/run_limma_gse134692_from_rawcounts.R not found, skipping.${NC}"
+fi
+if [ -f "src/run_limma_gse16846_from_series.R" ]; then
+    Rscript src/run_limma_gse16846_from_series.R
+    echo -e "${GREEN}GSE16846 limma from series completed.${NC}"
+else
+    echo -e "${RED}Warning: src/run_limma_gse16846_from_series.R not found, skipping.${NC}"
+fi
+if [ -f "src/run_limma_gse32147_16w_from_series.R" ]; then
+    Rscript src/run_limma_gse32147_16w_from_series.R
+    echo -e "${GREEN}GSE32147 (16w) limma from series completed.${NC}"
+else
+    echo -e "${RED}Warning: src/run_limma_gse32147_16w_from_series.R not found, skipping.${NC}"
+fi
+
 if [ -f "src/response_fig1_3/response_fig1_3.R" ]; then
     Rscript src/response_fig1_3/response_fig1_3.R
     echo -e "${GREEN}Response Fig 1,3 completed.${NC}"

@@ -156,6 +156,9 @@ Generated figures will be saved locally to the `figures/` directory (git-ignored
 | Figure 1H | AUC signature | `figures/figure1/figure1h_*.pdf` |
 | Figure 1I | Monocle pseudotime | `figures/figure1/figure1i_*.pdf` |
 | Response Fig 1,3 | Venn diagrams | `figures/response_fig1_3/*.pdf` |
+| Response Fig 1,3 | Bulk IPF limma (GSE134692) from raw counts | `data/processed/limmaresult_gse134692_from_rawcounts.csv` |
+| Response Fig 1,3 | Bulk BLM limma (GSE16846) from series matrix | `data/processed/limmaresult_gse16846_from_series.csv` |
+| Response Fig 1,3 | Bulk CS limma (GSE32147, 16w) from series matrix | `data/processed/limmaresult_gse32147_16w_from_series.csv` |
 | Comment7 Fig 1A-C | AT2 glycolysis | `figures/comment7_fig1/*.pdf` |
 | Comment7 Fig 2A-E | IPF AT2 STAT6 glycolysis | `figures/comment7_fig2/*.pdf` |
 | Comment7 Fig 3A-C | Metabolomics | `figures/comment7_fig3/*.pdf` |
