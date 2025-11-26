@@ -1,0 +1,18 @@
+conda_env: "py310"                          # scFEA environment name
+scfea_root: "/home/ly/miniconda3/envs/py310/lib/python3.10/site-packages/scFEA"   # adjust if different
+scfea_data_dir: "/home/ly/miniconda3/envs/py310/lib/python3.10/site-packages/scFEA/data"
+counts_file: "data/processed/scfea_input/at2_counts.csv"
+input_dir: "data/processed/scfea_input"
+test_file_name: "at2_counts.csv"
+moduleGene_file: "module_gene_m168.csv"
+stoichiometry_matrix: "cmMat_c70_m168.csv"
+cName_file: "cName_c70_m168.csv"
+results_dir: "data/processed/scfea_flux_at2"
+flux_output: "data/processed/scfea_flux_at2/adj_flux.csv"
+balance_output: "data/processed/scfea_flux_at2/adj_balance.csv"
+sc_imputation: true
+train_epoch: 100
+log_dir: "logs/scfea"
+use_gpu: false
+batch_size: 128
+lr: 0.01

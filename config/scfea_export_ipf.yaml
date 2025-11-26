@@ -1,0 +1,24 @@
+seurat_file: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq/sce_ipfat2.rds"
+counts_output: "data/processed/scfea_input/ipf_at2_counts.csv"
+metadata_output: "data/processed/scfea_input/ipf_at2_metadata.csv"
+assay: "RNA"
+slot: "counts"
+meta_fields:
+  - "orig.ident"
+  - "nomipf"
+  - "celltype"
+  - "seurat_clusters"
+  - "nCount_RNA"
+  - "nFeature_RNA"
+  - "percent.mt"
+  - "STAT6NGSVA"
+  - "STAT6PGSVA"
+  - "STAT6GSVA"
+filters:
+  - column: "nomipf"
+    include: ["IPF"]
+feature_genes:
+  - "STAT6"
+feature_output_names:
+  STAT6: "STAT6_expr"
+feature_slot: "data"

@@ -1,0 +1,19 @@
+# Large processed data (excluded from repo; provide on request or regenerate)
+data/processed/scfea_input/
+data/processed/scfea_flux_at2/
+data/processed/scfea_flux_ipf_at2/
+data/processed/*.rds
+
+# Raw data (not bundled)
+data/raw/
+
+# Logs and cache
+logs/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# R artifacts
+.Rhistory
+.RData
+.Rproj.user/
