@@ -34,8 +34,9 @@ suppressPackageStartupMessages({
   library(ggrepel)
   library(monocle)
   library(yaml)
-  library(hdf5r)
 })
+
+`%||%` <- function(x, y) if (is.null(x) || length(x) == 0) y else x
 
 # Get script directory and project root
 args <- commandArgs(trailingOnly = FALSE)
@@ -57,81 +58,23 @@ fig_dir <- "figures/figure1"
 dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
 
 # ==============================================================================
-# Step 1: Check for existing processed data or load raw data
+# Step 1: Load processed Seurat object (required)
 # ==============================================================================
-sce_all_path <- file.path(config$raw_data$wd_dir, "../scRNAseq/sce_all.rds")
+sce_all_path <- config$raw_data$seurat_all %||% stop("config$raw_data$seurat_all is not set")
 
-if (file.exists(sce_all_path)) {
-  cat(sprintf("=== Loading existing sce_all from %s ===\n", sce_all_path))
-  sce <- readRDS(sce_all_path)
-  cat(sprintf("Successfully loaded Seurat object with %d cells\n", ncol(sce)))
-  skip_processing <- TRUE
-} else {
-  cat("=== Loading raw scRNA-seq data from H5 files ===\n")
-  skip_processing <- FALSE
-
-  h5_files <- config$raw_data$h5_files
-  sample_names <- c('IPF1', 'IPF2', 'IPF3', 'NOM1', 'NOM2', 'NOM3')
-  scRNAlist <- list()
-
-  for(i in seq_along(sample_names)){
-    cat(sprintf("Loading %s from %s\n", sample_names[i], h5_files[[sample_names[i]]]))
-    counts <- Read10X_h5(filename = h5_files[[sample_names[i]]])
-    scRNAlist[[i]] <- CreateSeuratObject(counts, min.cells=1)
-  }
-
-  # Set sample identities
-  scRNAlist[[1]]@meta.data[["orig.ident"]] <- as.factor(rep("IPF1", ncol(scRNAlist[[1]])))
-  scRNAlist[[2]]@meta.data[["orig.ident"]] <- as.factor(rep("IPF2", ncol(scRNAlist[[2]])))
-  scRNAlist[[3]]@meta.data[["orig.ident"]] <- as.factor(rep("IPF3", ncol(scRNAlist[[3]])))
-  scRNAlist[[4]]@meta.data[["orig.ident"]] <- as.factor(rep("NOM1", ncol(scRNAlist[[4]])))
-  scRNAlist[[5]]@meta.data[["orig.ident"]] <- as.factor(rep("NOM2", ncol(scRNAlist[[5]])))
-  scRNAlist[[6]]@meta.data[["orig.ident"]] <- as.factor(rep("NOM3", ncol(scRNAlist[[6]])))
-
-  # Merge datasets
-  scRNA <- merge(scRNAlist[[1]], y=c(scRNAlist[[2]], scRNAlist[[3]],
-                                     scRNAlist[[4]], scRNAlist[[5]], scRNAlist[[6]]))
-
-  # ==============================================================================
-  # Step 2: Quality control filtering
-  # ==============================================================================
-  cat("=== Quality control filtering ===\n")
-
-  raw_sce <- scRNA
-  raw_sce[["percent.mt"]] <- PercentageFeatureSet(raw_sce, pattern = "^MT-")
-
-  # Filter cells based on QC thresholds from config
-  qc <- config$parameters$qc
-  sce <- subset(raw_sce, subset =
-                  nFeature_RNA > qc$min_features &
-                  nFeature_RNA < qc$max_features &
-                  nCount_RNA > qc$min_counts &
-                  percent.mt < qc$max_mt_percent)
-
-  cat(sprintf("Retained %d cells after QC filtering\n", ncol(sce)))
+if (!file.exists(sce_all_path)) {
+  stop(sprintf("Seurat object not found at %s. Please provide a processed sce_all.rds via config$raw_data$seurat_all.", sce_all_path))
 }
 
-# ==============================================================================
-# Step 3: Try to load existing processed data or perform analysis
-# ==============================================================================
-cat("=== Checking for existing processed data ===\n")
+cat(sprintf("=== Loading processed Seurat object from %s ===\n", sce_all_path))
+sce <- readRDS(sce_all_path)
+cat(sprintf("Loaded Seurat object with %d cells\n", ncol(sce)))
 
-sce_all_path <- file.path(config$raw_data$wd_dir, "../scRNAseq/sce_all.rds")
-if (file.exists(sce_all_path)) {
-  cat(sprintf("Loading existing sce_all from %s\n", sce_all_path))
-  sce <- readRDS(sce_all_path)
-  cat("Successfully loaded existing Seurat object\n")
-} else {
-  cat("No existing data found, performing normalization and clustering\n")
-  clustering <- config$parameters$clustering
-
-  sce <- NormalizeData(sce, normalization.method = "LogNormalize", scale.factor = 10000)
-  sce <- FindVariableFeatures(sce, selection.method = "vst", nfeatures = clustering$n_variable_features)
-  sce <- ScaleData(sce)
-  sce <- RunPCA(object = sce, pc.genes = VariableFeatures(sce))
-  sce <- FindNeighbors(sce, dims = 1:clustering$n_pcs)
-  sce <- FindClusters(sce, resolution = clustering$resolution)
-  sce <- RunUMAP(object = sce, dims = 1:clustering$n_pcs, do.fast = TRUE)
+required_reductions <- c("umap")
+missing_reductions <- setdiff(required_reductions, names(sce@reductions))
+if (length(missing_reductions) > 0) {
+  stop("Seurat object is missing required reductions: ", paste(missing_reductions, collapse = ", "),
+       ". Please ensure the processed object includes these embeddings.")
 }
 
 # ==============================================================================

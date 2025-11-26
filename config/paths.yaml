@@ -10,6 +10,7 @@ raw_data:
   # Working directory containing scRNA-seq data
   wd_dir: "/mnt/d/researchproject/STAT6 and EMT/wd"
   scRNAseq_dir: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq"
+  seurat_all: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq/sce_all.rds"
   seurat_at2: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq/sce_at2.rds"
   seurat_ipfat2: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq/sce_ipfat2.rds"
 
