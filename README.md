@@ -185,6 +185,7 @@ Generated figures will be saved locally to the `figures/` directory (git-ignored
 - Targeted metabolomics data from STAT6 KO mice: Available upon request to the corresponding contact
 - scFEA metabolic flux analysis results: Generated using scFEA v1.0
 - Large scFEA inputs/flux matrices and Seurat objects (`data/processed/scfea_input/*`, `data/processed/scfea_flux_*/*`, `data/processed/*.rds`) are not tracked in git to keep the repository lightweight. Use `scripts/run_all.sh` to copy them from your local scFEA runs (see `config/paths.yaml`) or regenerate them following the analysis scripts.
+- Fully processed Seurat objects (QC, normalization, dimensionality reduction, clustering, annotations) are available from the corresponding author upon reasonable request.
 
 ## Citation
 
