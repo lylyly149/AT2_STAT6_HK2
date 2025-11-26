@@ -131,6 +131,11 @@ Or run individual analysis scripts:
 conda activate r_4_3
 Rscript src/figure1/figure1.R
 
+# Response figures: bulk limma reruns (IPF/BLM/CS)
+Rscript src/response_fig1_3/run_limma_gse134692_from_rawcounts.R
+Rscript src/response_fig1_3/run_limma_gse16846_from_series.R
+Rscript src/response_fig1_3/run_limma_gse32147_16w_from_series.R
+
 # Response figures: Venn diagrams
 Rscript src/response_fig1_3/response_fig1_3.R
 
