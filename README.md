@@ -181,7 +181,7 @@ Generated figures will be saved locally to the `figures/` directory (git-ignored
 
 ## Citation
 
-If you use this code, please cite:
+If you use this code, please cite (manuscript under review):
 
 > STAT6-mediated glycolysis reprogramming in AT2 cells contributes to idiopathic pulmonary fibrosis. [Journal]. [Year].
 
