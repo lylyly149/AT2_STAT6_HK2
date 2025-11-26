@@ -184,7 +184,7 @@ Generated figures will be saved locally to the `figures/` directory (git-ignored
 
 - Targeted metabolomics data from STAT6 KO mice: Available upon request to the corresponding contact
 - Large scFEA inputs/flux matrices and Seurat objects are not tracked in git to keep the repository lightweight.
-- Fully processed Seurat objects (QC, normalization, dimensionality reduction, clustering, annotations) are available from the corresponding author upon reasonable request.
+- This repository is for sharing analysis code for the scientific manuscript; fully processed Seurat objects (QC, normalization, dimensionality reduction, clustering, annotations) are available from the corresponding author upon reasonable request.
 
 ## Citation
 
