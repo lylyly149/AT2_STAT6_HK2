@@ -18,14 +18,6 @@ raw_data:
   # scFEA analysis directory
   scfea_dir: "/mnt/d/researchproject/STAT6 and EMT/25_11_08_STAT6KO"
 
-  # scRNA-seq H5 files
-  h5_files:
-    IPF1: "/mnt/d/researchproject/STAT6 and EMT/wd/GSM3489183_IPF_01_filtered_gene_bc_matrices_h5.h5"
-    IPF2: "/mnt/d/researchproject/STAT6 and EMT/wd/GSM3489184_IPF_02_filtered_gene_bc_matrices_h5.h5"
-    IPF3: "/mnt/d/researchproject/STAT6 and EMT/wd/GSM3489188_IPF_03_filtered_gene_bc_matrices_h5.h5"
-    NOM1: "/mnt/d/researchproject/STAT6 and EMT/wd/GSM3489182_Donor_01_filtered_gene_bc_matrices_h5.h5"
-    NOM2: "/mnt/d/researchproject/STAT6 and EMT/wd/GSM3489187_Donor_03_filtered_gene_bc_matrices_h5.h5"
-    NOM3: "/mnt/d/researchproject/STAT6 and EMT/wd/GSM3489189_Donor_04_filtered_gene_bc_matrices_h5.h5"
 
   # Bulk RNA-seq differential expression results
   bulk_deg:
