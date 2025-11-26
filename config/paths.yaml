@@ -8,9 +8,10 @@ output_root: "/mnt/d/researchproject/STAT6 and EMT/AT2_STAT6_HK2"
 # Raw input data (read-only)
 raw_data:
   # Working directory containing scRNA-seq data
-  wd_dir: "/mnt/d/researchproject/STAT6 and EMT/wd"
   scRNAseq_dir: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq"
   seurat_all: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq/sce_all.rds"
+  seurat_epi: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq/sce_epi.rds"
+  seurat_ipf: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq/sce_ipf.rds"
   seurat_at2: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq/sce_at2.rds"
   seurat_ipfat2: "/mnt/d/researchproject/STAT6 and EMT/scRNAseq/sce_ipfat2.rds"
 

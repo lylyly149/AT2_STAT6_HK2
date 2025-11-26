@@ -162,8 +162,17 @@ saveRDS(sce, file.path(processed_dir, "sce_all.rds"))
 # ==============================================================================
 cat("\n=== Epithelial subset analysis ===\n")
 
-epi_sce_path <- file.path(config$raw_data$wd_dir, "../scRNAseq/sce_epi.rds")
-if (file.exists(epi_sce_path)) {
+epi_sce_config <- config$raw_data$seurat_epi
+epi_sce_processed <- file.path(processed_dir, "sce_epi.rds")
+epi_sce_path <- if (!is.null(epi_sce_config) && file.exists(epi_sce_config)) {
+  epi_sce_config
+} else if (file.exists(epi_sce_processed)) {
+  epi_sce_processed
+} else {
+  NULL
+}
+
+if (!is.null(epi_sce_path)) {
   cat(sprintf("Loading existing epithelial subset from %s\n", epi_sce_path))
   epi_sce <- readRDS(epi_sce_path)
 } else {
@@ -176,6 +185,7 @@ if (file.exists(epi_sce_path)) {
   epi_sce <- FindNeighbors(epi_sce, dims = 1:11)
   epi_sce <- FindClusters(epi_sce, resolution = 0.9)
   epi_sce <- RunTSNE(epi_sce, dims = 1:11, perplexity = 60)
+  saveRDS(epi_sce, epi_sce_processed)
 }
 
 if (is.null(epi_sce@meta.data$nomipf)) {
@@ -310,8 +320,17 @@ ggsave(file.path(fig_dir, "figure1d_bar_epi_stat6group_nomipf.pdf"), p_bar, widt
 # ==============================================================================
 cat("\n=== IPF epithelial re-clustering ===\n")
 
-epi_ipf_path <- file.path(config$raw_data$wd_dir, "../scRNAseq/sce_ipf.rds")
-if (file.exists(epi_ipf_path)) {
+epi_ipf_config <- config$raw_data$seurat_ipf
+epi_ipf_processed <- file.path(processed_dir, "sce_ipf.rds")
+epi_ipf_path <- if (!is.null(epi_ipf_config) && file.exists(epi_ipf_config)) {
+  epi_ipf_config
+} else if (file.exists(epi_ipf_processed)) {
+  epi_ipf_processed
+} else {
+  NULL
+}
+
+if (!is.null(epi_ipf_path)) {
   cat(sprintf("Loading existing IPF epithelial subset from %s\n", epi_ipf_path))
   epi_ipf <- readRDS(epi_ipf_path)
   # Ensure tSNE reduction exists
@@ -329,6 +348,7 @@ if (file.exists(epi_ipf_path)) {
   epi_ipf <- FindNeighbors(epi_ipf, dims = 1:10)
   epi_ipf <- FindClusters(epi_ipf, resolution = 0.9)
   epi_ipf <- RunTSNE(epi_ipf, dims=1:10, perplexity=80)
+  saveRDS(epi_ipf, epi_ipf_processed)
 }
 
 # ==============================================================================
@@ -445,14 +465,23 @@ ggsave(file.path(fig_dir, "figure1h_tsne_ipf_epi_auc.pdf"), p_auc, width = 7, he
 cat("\n=== Generating Figure 1I: Monocle pseudotime ===\n")
 
 # Load existing AT2 subset or create new
-at2_path <- file.path(config$raw_data$wd_dir, "../scRNAseq/sce_at2.rds")
-if (file.exists(at2_path)) {
+at2_config <- config$raw_data$seurat_at2
+at2_processed <- file.path(processed_dir, "sce_at2.rds")
+at2_path <- if (!is.null(at2_config) && file.exists(at2_config)) {
+  at2_config
+} else if (file.exists(at2_processed)) {
+  at2_processed
+} else {
+  NULL
+}
+
+if (!is.null(at2_path)) {
   cat(sprintf("Loading existing AT2 subset from %s\n", at2_path))
   sce_at2 <- readRDS(at2_path)
 } else {
   cat("Creating AT2 subset from epithelial cells\n")
   sce_at2 <- subset(epi_sce, seurat_clusters == "0")
-  saveRDS(sce_at2, file.path(processed_dir, "sce_at2.rds"))
+  saveRDS(sce_at2, at2_processed)
 }
 
 tryCatch({
