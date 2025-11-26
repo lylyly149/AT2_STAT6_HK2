@@ -43,15 +43,8 @@ AT2_STAT6_HK2/
 +-- scripts/
 |   +-- run_all.sh               # One-click reproducibility script
 |
-+-- data/                        # Data directory
-|   +-- processed/               # Intermediate results (generated; large scFEA inputs/flux and .rds files are git-ignored)
-|
-+-- figures/                     # Output figures (generated locally; git-ignored)
-    +-- figure1/                 # Created by scripts
-    +-- response_fig1_3/         # Created by scripts
-    +-- comment7_fig1/           # Created by scripts
-    +-- comment7_fig2/           # Created by scripts
-    +-- comment7_fig3/           # Created by scripts
++-- data/                        # User data workspace (not tracked; place inputs/processed outputs here)
++-- figures/                     # Generated figures (not tracked; created by scripts)
 ```
 
 ## Environment Setup
