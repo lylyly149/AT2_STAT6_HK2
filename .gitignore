@@ -1,6 +1,9 @@
 # Processed data (excluded from repo; provide on request or regenerate)
 data/processed/
 
+# Generated figures (excluded from repo; regenerate via scripts)
+figures/
+
 # Large processed data (legacy patterns; keep for clarity)
 data/processed/scfea_input/
 data/processed/scfea_flux_at2/
