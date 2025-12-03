@@ -4,10 +4,10 @@ This repository contains the analysis code for studying STAT6 pathway activation
 
 ## Project Description
 
-Pulmonary fibrosis (PF) is a progressive fibrotic lung disease with limited therapeutic options. This study investigates the role of STAT6 signaling pathway in AT2 cell dysfunction and metabolic reprogramming during IPF progression. We integrated single-cell RNA sequencing (scRNA-seq), bulk RNA-seq, metabolic flux analysis (scFEA), and targeted metabolomics to comprehensively characterize STAT6-mediated glycolysis alterations in IPF.
+Pulmonary fibrosis (PF) is a progressive fibrotic lung disease with limited therapeutic options. This study investigates the role of STAT6 signaling pathway in AT2 cell dysfunction and metabolic reprogramming during PF progression. We integrated single-cell RNA sequencing (scRNA-seq), bulk RNA-seq, metabolic flux analysis (scFEA), and targeted metabolomics to comprehensively characterize STAT6-mediated glycolysis alterations in PF.
 
 Key findings include:
-- Elevated STAT6 pathway activity in IPF AT2 cells
+- Elevated STAT6 pathway activity in PF AT2 cells
 - Association between STAT6 activation and glycolysis metabolic flux
 - Validation in STAT6 knockout mouse models
 
