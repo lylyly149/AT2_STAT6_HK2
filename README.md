@@ -1,10 +1,10 @@
 # AT2_STAT6_HK2: STAT6 Pathway Analysis in IPF AT2 Cells
 
-This repository contains the analysis code for studying STAT6 pathway activation and glycolysis metabolism in idiopathic pulmonary fibrosis (IPF) alveolar type II (AT2) cells.
+This repository contains the analysis code for studying STAT6 pathway activation and glycolysis metabolism in pulmonary fibrosis (PF) alveolar type II (AT2) cells.
 
 ## Project Description
 
-Idiopathic pulmonary fibrosis (IPF) is a progressive fibrotic lung disease with limited therapeutic options. This study investigates the role of STAT6 signaling pathway in AT2 cell dysfunction and metabolic reprogramming during IPF progression. We integrated single-cell RNA sequencing (scRNA-seq), bulk RNA-seq, metabolic flux analysis (scFEA), and targeted metabolomics to comprehensively characterize STAT6-mediated glycolysis alterations in IPF.
+Pulmonary fibrosis (PF) is a progressive fibrotic lung disease with limited therapeutic options. This study investigates the role of STAT6 signaling pathway in AT2 cell dysfunction and metabolic reprogramming during IPF progression. We integrated single-cell RNA sequencing (scRNA-seq), bulk RNA-seq, metabolic flux analysis (scFEA), and targeted metabolomics to comprehensively characterize STAT6-mediated glycolysis alterations in IPF.
 
 Key findings include:
 - Elevated STAT6 pathway activity in IPF AT2 cells
