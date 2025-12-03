@@ -45,11 +45,11 @@ AT2_STAT6_HK2/
 |   |   +-- figures6.R
 |   +-- figures7/                # Spatial STAT6/EMT/glycolysis maps
 |   |   +-- figures7.R
-|   +-- figgures8/               # Comment 7 figure 1 (scFEA glycolysis AT2)
+|   +-- figgures8/               # scFEA glycolysis AT2 (figure set 1)
 |   |   +-- figgures8.R
-|   +-- figures9/                # Comment 7 figure 2 (STAT6-stratified flux)
+|   +-- figures9/                # STAT6-stratified flux (figure set 2)
 |   |   +-- figures9.R
-|   +-- figures10/               # Comment 7 figure 3 (metabolomics STAT6 KO)
+|   +-- figures10/               # Metabolomics STAT6 KO (figure set 3)
 |   |   +-- figures10.R
 |   +-- scfea/                   # scFEA exports/runs
 |   |   +-- export_scfea_inputs.R
@@ -148,7 +148,7 @@ The script reads `config/paths.local.yaml` (fallback `paths.yaml`) to pick the c
 - Response Figures 1/3 (limma reruns, Venns, PF-target heatmaps/network `figures1j_k.R`)
 - Figure 6 (Monocle pseudotime heatmap + STAT6 alluvial)
 - Figure 7 (spatial STAT6/EMT/glycolysis maps)
-- Comment 7 Figures 1–3 (scFEA + metabolomics)
+- scFEA + metabolomics figure sets (figgures8, figures9, figures10)
 
 ### Step 4: Run scripts individually (optional)
 
@@ -190,7 +190,7 @@ Rscript src/figures10/figures10.R
 - `figures/figures3/` – macrophage UMAP/dotplot and STAT6 violins for macrophage subtypes and fibroblasts.
 - `figures/figures6/` – `figure6_pseudotime_heatmap.pdf`, `state_DEGs_pseudotime.csv`, `figure6_alluvial_STAT6_positive_clusters.pdf`.
 - `figures/figures7/` – spatial feature maps, STAT6/EMT/glycolysis scatter, and crossK/PCF plots.
-- `figures/figgures8/`, `figures/figures9/`, `figures/figures10/` – comment 7 figure sets (glycolysis flux, STAT6-stratified flux, metabolomics).
+- `figures/figgures8/`, `figures/figures9/`, `figures/figures10/` – scFEA/metabolomics figure sets (glycolysis flux, STAT6-stratified flux, metabolomics).
 - `data/processed/` – copied scFEA inputs/fluxes, scFEA differential flux tables (`scfea_flux_diff_ipf_at2_stat6p_all.csv`, `..._sig.csv`), and other intermediates.
 
 ## Data Availability
