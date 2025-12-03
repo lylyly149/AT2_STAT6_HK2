@@ -3,6 +3,7 @@ data/processed/
 
 # Generated figures (excluded from repo; regenerate via scripts)
 figures/
+/figures1/
 
 # Large processed data (legacy patterns; keep for clarity)
 data/processed/scfea_input/

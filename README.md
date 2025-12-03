@@ -28,8 +28,11 @@ AT2_STAT6_HK2/
 |   +-- figure1/                 # Main figure 1 analysis
 |   |   +-- figure1.R            # scRNA-seq analysis of STAT6 in IPF
 |   |
-|   +-- response_fig1_3/         # Reviewer response figures
-|   |   +-- response_fig1_3.R    # Venn diagrams of DEG intersections
+|   +-- figures1/                # Reviewer response figures (moved from response_fig1_3)
+|   |   +-- figures1a-1.R        # Venn diagrams of DEG intersections
+|   |   +-- figures1b_run_limma_gse134692_from_rawcounts.R
+|   |   +-- figures1c_run_limma_gse32147_16w_from_series.R
+|   |   +-- figures1d_run_limma_gse16846_from_series.R
 |   |
 |   +-- comment7_fig1/           # Comment 7 figure 1
 |   |   +-- comment7_fig1.R      # scFEA glycolysis in AT2 (IPF vs NOM)
@@ -45,6 +48,7 @@ AT2_STAT6_HK2/
 |
 +-- data/                        # User data workspace (not tracked; place inputs/processed outputs here)
 +-- figures/                     # Generated figures (not tracked; created by scripts)
++-- figures1/                    # Response Fig 1,3 outputs (not tracked; created by scripts)
 ```
 
 ## Environment Setup
@@ -134,12 +138,12 @@ conda activate r_4_3
 Rscript src/figure1/figure1.R
 
 # Response figures: bulk limma reruns (IPF/BLM/CS)
-Rscript src/response_fig1_3/run_limma_gse134692_from_rawcounts.R
-Rscript src/response_fig1_3/run_limma_gse16846_from_series.R
-Rscript src/response_fig1_3/run_limma_gse32147_16w_from_series.R
+Rscript src/figures1/figures1b_run_limma_gse134692_from_rawcounts.R
+Rscript src/figures1/figures1d_run_limma_gse16846_from_series.R
+Rscript src/figures1/figures1c_run_limma_gse32147_16w_from_series.R
 
 # Response figures: Venn diagrams
-Rscript src/response_fig1_3/response_fig1_3.R
+Rscript src/figures1/figures1a-1.R
 
 # Comment 7 figures: Glycolysis analysis
 Rscript src/comment7_fig1/comment7_fig1.R
@@ -149,7 +153,7 @@ Rscript src/comment7_fig3/comment7_fig3.R
 
 ### Step 4: Outputs
 
-Generated figures will be saved locally to the `figures/` directory (git-ignored, regenerate with the scripts):
+Generated figures will be saved locally to the `figures/` directory (git-ignored, regenerate with the scripts), with Response Fig 1,3 writing to `figures/figures1/`:
 
 | Figure | Description | Output Location |
 |--------|-------------|-----------------|
@@ -162,7 +166,7 @@ Generated figures will be saved locally to the `figures/` directory (git-ignored
 | Figure 1G | STAT6 by cluster | `figures/figure1/figure1g_*.pdf` |
 | Figure 1H | AUC signature | `figures/figure1/figure1h_*.pdf` |
 | Figure 1I | Monocle pseudotime | `figures/figure1/figure1i_*.pdf` |
-| Response Fig 1,3 | Venn diagrams | `figures/response_fig1_3/*.pdf` |
+| Response Fig 1,3 | Venn diagrams + limma volcano plots | `figures/figures1/*.pdf` |
 | Response Fig 1,3 | Bulk IPF limma (GSE134692) from raw counts | `data/processed/limmaresult_gse134692_from_rawcounts.csv` |
 | Response Fig 1,3 | Bulk BLM limma (GSE16846) from series matrix | `data/processed/limmaresult_gse16846_from_series.csv` |
 | Response Fig 1,3 | Bulk CS limma (GSE32147, 16w) from series matrix | `data/processed/limmaresult_gse32147_16w_from_series.csv` |

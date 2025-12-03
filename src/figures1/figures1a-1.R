@@ -35,7 +35,7 @@ config <- yaml::read_yaml(file.path(project_root, "config/paths.yaml"))
 setwd(project_root)
 
 # Create output directory
-fig_dir <- "figures/response_fig1_3"
+fig_dir <- file.path("figures", "figures1")
 processed_dir <- "data/processed"
 dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
 dir.create(processed_dir, recursive = TRUE, showWarnings = FALSE)
@@ -173,7 +173,7 @@ write.csv(data.frame(Gene=intersect_all_three), file.path(processed_dir, "inters
 # ==============================================================================
 cat("=== Generating Venn Diagram 1: GSE134692 vs PF target ===\n")
 
-pdf(file.path(fig_dir, "venn_diagram_GSE134692_vs_PF_target.pdf"), width=8, height=8)
+pdf(file.path(fig_dir, "figures1a_venn_diagram_GSE134692_vs_PF_target.pdf"), width=8, height=8)
 venn.plot1 <- venn.diagram(
   x = list(
     GSE134692 = genes_134692,
@@ -192,14 +192,14 @@ venn.plot1 <- venn.diagram(
 )
 grid.draw(venn.plot1)
 dev.off()
-cat("  Saved venn_diagram_GSE134692_vs_PF_target.pdf\n")
+cat("  Saved figures1a_venn_diagram_GSE134692_vs_PF_target.pdf\n")
 
 # ==============================================================================
 # Venn Diagram 2: GSE16846 vs PF target
 # ==============================================================================
 cat("=== Generating Venn Diagram 2: GSE16846 vs PF target ===\n")
 
-pdf(file.path(fig_dir, "venn_diagram_GSE16846_vs_PF_target.pdf"), width=8, height=8)
+pdf(file.path(fig_dir, "figures1a_venn_diagram_GSE16846_vs_PF_target.pdf"), width=8, height=8)
 venn.plot2 <- venn.diagram(
   x = list(
     GSE16846 = genes_16846,
@@ -218,14 +218,14 @@ venn.plot2 <- venn.diagram(
 )
 grid.draw(venn.plot2)
 dev.off()
-cat("  Saved venn_diagram_GSE16846_vs_PF_target.pdf\n")
+cat("  Saved figures1a_venn_diagram_GSE16846_vs_PF_target.pdf\n")
 
 # ==============================================================================
 # Venn Diagram 3: GSE32147 vs PF target
 # ==============================================================================
 cat("=== Generating Venn Diagram 3: GSE32147 vs PF target ===\n")
 
-pdf(file.path(fig_dir, "venn_diagram_GSE32147_vs_PF_target.pdf"), width=8, height=8)
+pdf(file.path(fig_dir, "figures1a_venn_diagram_GSE32147_vs_PF_target.pdf"), width=8, height=8)
 venn.plot3 <- venn.diagram(
   x = list(
     GSE32147 = genes_32147,
@@ -244,14 +244,14 @@ venn.plot3 <- venn.diagram(
 )
 grid.draw(venn.plot3)
 dev.off()
-cat("  Saved venn_diagram_GSE32147_vs_PF_target.pdf\n")
+cat("  Saved figures1a_venn_diagram_GSE32147_vs_PF_target.pdf\n")
 
 # ==============================================================================
 # Venn Diagram 4: Three-way intersection of all datasets
 # ==============================================================================
 cat("=== Generating Venn Diagram 4: Three datasets intersection ===\n")
 
-pdf(file.path(fig_dir, "venn_diagram_three_datasets.pdf"), width=8, height=8)
+pdf(file.path(fig_dir, "figures1a_venn_diagram_three_datasets.pdf"), width=8, height=8)
 venn.plot4 <- venn.diagram(
   x = list(
     GSE134692 = genes_134692,
@@ -271,7 +271,7 @@ venn.plot4 <- venn.diagram(
 )
 grid.draw(venn.plot4)
 dev.off()
-cat("  Saved venn_diagram_three_datasets.pdf\n")
+cat("  Saved figures1a_venn_diagram_three_datasets.pdf\n")
 
 cat("\n=== Response Figure 1,3 analysis complete ===\n")
 cat("All figures saved to:", fig_dir, "\n")
