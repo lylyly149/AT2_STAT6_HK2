@@ -1,4 +1,4 @@
-# AT2_STAT6_HK2: STAT6 Pathway Analysis in IPF AT2 Cells
+# AT2_STAT6_HK2: STAT6 Pathway Analysis in PF AT2 Cells
 
 This repository contains the analysis code for studying STAT6 pathway activation and glycolysis metabolism in pulmonary fibrosis (PF) alveolar type II (AT2) cells.
 
