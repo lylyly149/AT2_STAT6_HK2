@@ -1,16 +1,14 @@
 #!/usr/bin/env Rscript
 # ==============================================================================
-# Comment 7 Figure 2: scFEA glycolysis flux in IPF AT2 cells stratified by STAT6
+# Comment 7 Figure 1: scFEA glycolysis flux analysis in AT2 cells (IPF vs NOM)
 # ==============================================================================
 #
-# This script generates figures for metabolic flux analysis stratified by STAT6:
-#   - Figure 2A: Heatmap of flux modules (STAT6 high vs low)
-#   - Figure 2B: Volcano plot showing module flux changes (Cohen's d)
-#   - Figure 2C: Boxplot of glycolysis scores by STAT6 status
-#   - Figure 2D: Dot plot of glycolysis flux modules M1-M6
-#   - Figure 2E: Scatter plot of glycolysis score vs STAT6 PGSVA
+# This script generates figures for scFEA metabolic flux analysis:
+#   - Figure 1A: Volcano plot showing glycolysis module flux changes (Cohen's d)
+#   - Figure 1B: Boxplot of glycolysis scores (NOM vs IPF)
+#   - Figure 1C: Dot plot of glycolysis flux modules M1-M6
 #
-# Input: scFEA flux results from IPF AT2 cells with STAT6PGSVA scores
+# Input: scFEA flux results from AT2 cells
 # Runtime environment: conda activate r_4_3 (R 4.3+)
 # ==============================================================================
 
@@ -22,6 +20,7 @@ suppressPackageStartupMessages({
   library(pheatmap)
   library(ggrepel)
   library(Seurat)
+  library(optparse)
   library(yaml)
 })
 
@@ -38,21 +37,21 @@ config <- yaml::read_yaml(file.path(project_root, "config/paths.yaml"))
 setwd(project_root)
 
 # Create output directories
-fig_dir <- "figures/comment7_fig2"
+fig_dir <- "figures/figgures8"
 processed_dir <- "data/processed"
 dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
 dir.create(processed_dir, recursive = TRUE, showWarnings = FALSE)
 
 cat("\n====================\n")
-cat("Comment 7 Figure 2: IPF AT2 glycolysis flux by STAT6 status\n")
+cat("Comment 7 Figure 1: AT2 glycolysis flux analysis\n")
 cat("====================\n\n")
 
 # ==============================================================================
 # Parameters
 # ==============================================================================
-group_a <- "STAT6P_high"  # High STAT6 pathway activity
-group_b <- "STAT6P_low"   # Low STAT6 pathway activity
-split_column <- "STAT6PGSVA"
+group_a <- "NOM"  # Reference group
+group_b <- "IPF"  # Comparison group
+group_column <- "nomipf"
 padj_cutoff <- config$parameters$stats$padj_cutoff
 
 # ==============================================================================
@@ -60,8 +59,9 @@ padj_cutoff <- config$parameters$stats$padj_cutoff
 # ==============================================================================
 cat("=== Loading scFEA flux data ===\n")
 
-flux_file <- config$processed_data$scfea_flux_ipf_at2
-metadata_file <- config$processed_data$scfea_input_ipf_metadata
+# Read data (adjust paths based on config)
+flux_file <- config$processed_data$scfea_flux_at2
+metadata_file <- config$processed_data$scfea_input_at2_metadata
 module_info_file <- config$raw_data$scfea_module_info
 
 read_table <- function(path) read_csv(path, show_col_types = FALSE)
@@ -75,24 +75,22 @@ first_col <- names(flux)[1]
 if (first_col %in% c("cell_id", "Unnamed: 0")) {
   names(flux)[1] <- "cell_id"
 } else {
+  warning("Treating first column '", first_col, "' as cell_id.")
   names(flux)[1] <- "cell_id"
 }
 
-# Split cells by median STAT6PGSVA score
-med <- median(meta[[split_column]], na.rm = TRUE)
-meta <- meta %>%
-  mutate(group = ifelse(.data[[split_column]] >= med, group_a, group_b)) %>%
-  select(cell_id, group, orig.ident, STAT6PGSVA)
-
+# Filter cells
 flux <- flux %>% semi_join(meta, by = "cell_id")
-meta <- meta %>% filter(cell_id %in% flux$cell_id)
+meta <- meta %>%
+  filter(cell_id %in% flux$cell_id) %>%
+  mutate(group = .data[[group_column]]) %>%
+  filter(group %in% c(group_a, group_b))
+flux <- flux %>% filter(cell_id %in% meta$cell_id)
 
 cat(sprintf("Retained %d cells for analysis\n", nrow(meta)))
-cat(sprintf("  STAT6P high: %d cells\n", sum(meta$group == group_a)))
-cat(sprintf("  STAT6P low: %d cells\n", sum(meta$group == group_b)))
 
 # ==============================================================================
-# Step 2: Process module information
+# Step 2: Identify glycolysis/TCA modules
 # ==============================================================================
 cat("\n=== Processing module information ===\n")
 
@@ -102,9 +100,9 @@ mod_info <- mod_info %>%
 modules_in_flux <- intersect(mod_info$Module_id, names(flux))
 cat(sprintf("Found %d modules in flux data\n", length(modules_in_flux)))
 
-flux_all <- flux %>%
+flux_gly <- flux %>%
   select(cell_id, all_of(modules_in_flux)) %>%
-  inner_join(meta, by = "cell_id")
+  inner_join(meta %>% select(cell_id, group, orig.ident), by = "cell_id")
 
 # ==============================================================================
 # Step 3: Calculate differential flux statistics
@@ -121,10 +119,10 @@ calc_stats <- function(df, module) {
   mean_b <- mean(b_vals, na.rm = TRUE)
   min_mean <- min(mean_a, mean_b, na.rm = TRUE)
   shift <- if (is.finite(min_mean) && min_mean <= 0) abs(min_mean) + 1e-6 else 1e-6
-  logfc <- log2(mean_a + shift) - log2(mean_b + shift)  # High - Low
+  logfc <- log2(mean_b + shift) - log2(mean_a + shift)  # IPF - NOM
   pooled_std <- sqrt(((length(a_vals) - 1) * stats::var(a_vals) + (length(b_vals) - 1) * stats::var(b_vals)) /
                        (length(a_vals) + length(b_vals) - 2))
-  cohen_d <- (mean_a - mean_b) / pooled_std
+  cohen_d <- (mean_b - mean_a) / pooled_std
   tibble(
     Module_id = module,
     mean_group_a = mean_a,
@@ -135,55 +133,24 @@ calc_stats <- function(df, module) {
   )
 }
 
-stats_tbl <- bind_rows(lapply(modules_in_flux, function(m) calc_stats(flux_all, m))) %>%
+stats_tbl <- bind_rows(lapply(modules_in_flux, function(m) calc_stats(flux_gly, m))) %>%
   mutate(padj = p.adjust(pvalue, method = "BH")) %>%
   left_join(mod_info %>% select(Module_id, SM_anno, label_full), by = "Module_id") %>%
   arrange(padj)
 
-write_csv(stats_tbl, file.path(processed_dir, "scfea_flux_diff_ipf_at2_stat6p_all.csv"))
+# Save statistical results
+write_csv(stats_tbl, file.path(processed_dir, "scfea_flux_diff_at2_all.csv"))
 write_csv(filter(stats_tbl, !is.na(padj) & padj < padj_cutoff),
-          file.path(processed_dir, "scfea_flux_diff_ipf_at2_stat6p_sig.csv"))
+          file.path(processed_dir, "scfea_flux_diff_at2_sig.csv"))
+
+# ==============================================================================
+# Figure 1A: Volcano plot (Cohen's d)
+# ==============================================================================
+cat("\n=== Generating Figure 1A: Volcano plot ===\n")
 
 gly_only <- c("M_1", "M_2", "M_3", "M_4", "M_5", "M_6")
 label_lookup <- mod_info$label_full
 names(label_lookup) <- mod_info$Module_id
-
-# ==============================================================================
-# Figure 2A: Heatmap of flux modules
-# ==============================================================================
-cat("\n=== Generating Figure 2A: Module heatmap ===\n")
-
-# Calculate mean flux per group for heatmap
-heatmap_data <- flux_all %>%
-  group_by(group) %>%
-  summarise(across(all_of(modules_in_flux), mean, na.rm = TRUE), .groups = "drop") %>%
-  column_to_rownames("group") %>%
-  t()
-
-# Scale for heatmap
-heatmap_scaled <- t(scale(t(heatmap_data)))
-heatmap_scaled[is.na(heatmap_scaled)] <- 0
-
-# Add module labels
-rownames(heatmap_scaled) <- label_lookup[rownames(heatmap_scaled)]
-
-p_heatmap <- pheatmap(
-  heatmap_scaled,
-  cluster_cols = FALSE,
-  cluster_rows = TRUE,
-  show_rownames = TRUE,
-  fontsize_row = 6,
-  color = colorRampPalette(c("blue", "white", "red"))(100),
-  main = "Metabolic flux modules (STAT6P high vs low)",
-  filename = file.path(fig_dir, "heatmap_modules.pdf"),
-  width = 6,
-  height = 10
-)
-
-# ==============================================================================
-# Figure 2B: Volcano plot (Cohen's d)
-# ==============================================================================
-cat("\n=== Generating Figure 2B: Volcano plot ===\n")
 
 volcano_df <- stats_tbl %>%
   mutate(
@@ -205,8 +172,8 @@ p_volcano <- ggplot(volcano_df, aes(x = cohen_d, y = neglog10_padj)) +
   geom_point(data = subset(volcano_df, label_flag), color = "#d73027", size = 2.6, alpha = 0.95) +
   geom_vline(xintercept = 0, linetype = "dashed", color = "grey50") +
   labs(
-    title = paste0("Metabolic modules: ", group_a, " vs ", group_b),
-    x = "Cohen's d (STAT6P high - low)",
+    title = paste0("Glycolysis/TCA modules: ", group_b, " vs ", group_a),
+    x = "Cohen's d (IPF - NOM)",
     y = "-log10(padj)"
   ) +
   theme_bw() +
@@ -225,25 +192,26 @@ if (any(!is.na(volcano_df$label_plot))) {
     )
 }
 
-ggsave(file.path(fig_dir, "volcano_modules_cohend.png"), p_volcano, width = 7, height = 5.5, dpi = 300)
-ggsave(file.path(fig_dir, "volcano_modules_cohend.pdf"), p_volcano, width = 7, height = 5.5)
+ggsave(file.path(fig_dir, "volcano_glycolysis_modules_cohend.png"), p_volcano, width = 7, height = 5.5, dpi = 300)
+ggsave(file.path(fig_dir, "volcano_glycolysis_modules_cohend.pdf"), p_volcano, width = 7, height = 5.5)
 
 # ==============================================================================
-# Figure 2C: Glycolysis score boxplot
+# Figure 1B: Glycolysis score boxplot
 # ==============================================================================
-cat("\n=== Generating Figure 2C: Glycolysis score boxplot ===\n")
+cat("\n=== Generating Figure 1B: Glycolysis score boxplot ===\n")
 
-glycolysis_score <- flux_all %>%
+# Calculate glycolysis score (sum of M1-M6 flux)
+glycolysis_score <- flux_gly %>%
   mutate(glycolysis_score = rowSums(select(., all_of(gly_only)), na.rm = TRUE)) %>%
   select(cell_id, group, glycolysis_score)
 
 p_boxplot <- ggplot(glycolysis_score, aes(x = group, y = glycolysis_score, fill = group)) +
   geom_boxplot(alpha = 0.6, outlier.shape = NA) +
   geom_jitter(width = 0.15, size = 0.8, alpha = 0.3) +
-  scale_fill_manual(values = c("STAT6P_high" = "#d73027", "STAT6P_low" = "#4575b4")) +
+  scale_fill_manual(values = c("NOM" = "#5aa4ae", "IPF" = "#ea5514")) +
   labs(
     title = "Glycolysis flux score (M1-M6)",
-    x = "STAT6P group",
+    x = "Group",
     y = "Glycolysis score"
   ) +
   theme_bw() +
@@ -253,14 +221,15 @@ ggsave(file.path(fig_dir, "glycolysis_score_boxplot.png"), p_boxplot, width = 5,
 ggsave(file.path(fig_dir, "glycolysis_score_boxplot.pdf"), p_boxplot, width = 5, height = 4)
 
 # ==============================================================================
-# Figure 2D: Dot plot of glycolysis modules M1-M6
+# Figure 1C: Dot plot of glycolysis modules M1-M6
 # ==============================================================================
-cat("\n=== Generating Figure 2D: Dot plot of M1-M6 ===\n")
+cat("\n=== Generating Figure 1C: Dot plot of M1-M6 ===\n")
 
 if (all(gly_only %in% modules_in_flux)) {
-  mat_for_seurat <- t(as.matrix(flux_all %>% select(all_of(modules_in_flux))))
-  colnames(mat_for_seurat) <- flux_all$cell_id
-  meta_df <- flux_all %>% select(cell_id, group) %>% as.data.frame()
+  # Build Seurat object on flux values
+  mat_for_seurat <- t(as.matrix(flux_gly %>% select(all_of(modules_in_flux))))
+  colnames(mat_for_seurat) <- flux_gly$cell_id
+  meta_df <- flux_gly %>% select(cell_id, group) %>% as.data.frame()
   rownames(meta_df) <- meta_df$cell_id
   seu <- CreateSeuratObject(counts = mat_for_seurat, assay = "FLUX")
   DefaultAssay(seu) <- "FLUX"
@@ -279,7 +248,7 @@ if (all(gly_only %in% modules_in_flux)) {
     geom_point(aes(size = pct.exp), shape = 21, colour = "black", stroke = 0.5) +
     guides(size = guide_legend(override.aes = list(shape = 21, colour = "black", fill = "white"))) +
     scale_x_discrete(labels = label_vec) +
-    labs(title = "Glycolysis flux modules (M1-M6)", x = "Module", y = "STAT6P group") +
+    labs(title = "Glycolysis flux modules (M1-M6)", x = "Module", y = "Group") +
     theme_bw() +
     theme(
       panel.grid.major = element_line(color = "grey85"),
@@ -293,32 +262,5 @@ if (all(gly_only %in% modules_in_flux)) {
   ggsave(file.path(fig_dir, "dotplot_glycolysis_M1_M6.pdf"), dot, width = 5, height = 8)
 }
 
-# ==============================================================================
-# Figure 2E: Scatter plot of glycolysis vs STAT6PGSVA
-# ==============================================================================
-cat("\n=== Generating Figure 2E: Glycolysis vs STAT6PGSVA scatter ===\n")
-
-scatter_data <- flux_all %>%
-  mutate(glycolysis_score = rowSums(select(., all_of(gly_only)), na.rm = TRUE)) %>%
-  select(cell_id, STAT6PGSVA, glycolysis_score, group)
-
-cor_test <- cor.test(scatter_data$STAT6PGSVA, scatter_data$glycolysis_score, method = "pearson")
-cor_label <- NULL  # correlation annotation removed
-
-p_scatter <- ggplot(scatter_data, aes(x = STAT6PGSVA, y = glycolysis_score)) +
-  geom_point(aes(color = group), alpha = 0.6, size = 1.5) +
-  geom_smooth(method = "lm", se = TRUE, color = "black", linetype = "dashed") +
-  scale_color_manual(values = c("STAT6P_high" = "#d73027", "STAT6P_low" = "#4575b4")) +
-  labs(
-    title = "Glycolysis score vs STAT6 pathway activity",
-    x = "STAT6 PGSVA score",
-    y = "Glycolysis flux score (M1-M6)"
-  ) +
-  theme_bw() +
-  theme(legend.position = "bottom")
-
-ggsave(file.path(fig_dir, "glycolysis_vs_STAT6PGSVA_scatter.png"), p_scatter, width = 6, height = 5, dpi = 300)
-ggsave(file.path(fig_dir, "glycolysis_vs_STAT6PGSVA_scatter.pdf"), p_scatter, width = 6, height = 5)
-
-cat("\n=== Comment 7 Figure 2 analysis complete ===\n")
+cat("\n=== Comment 7 Figure 1 analysis complete ===\n")
 cat("All figures saved to:", fig_dir, "\n")

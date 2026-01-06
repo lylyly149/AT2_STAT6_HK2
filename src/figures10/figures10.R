@@ -37,7 +37,7 @@ config <- yaml::read_yaml(file.path(project_root, "config/paths.yaml"))
 setwd(project_root)
 
 # Create output directories
-fig_dir <- "figures/comment7_fig3"
+fig_dir <- "figures/figures10"
 processed_dir <- "data/processed"
 enrichment_dir <- file.path(fig_dir, "enrichment")
 dir.create(fig_dir, recursive = TRUE, showWarnings = FALSE)
