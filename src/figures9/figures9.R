@@ -302,7 +302,14 @@ scatter_data <- flux_all %>%
   mutate(glycolysis_score = rowSums(select(., all_of(gly_only)), na.rm = TRUE)) %>%
   select(cell_id, STAT6PGSVA, glycolysis_score, group)
 
-cor_test <- cor.test(scatter_data$STAT6PGSVA, scatter_data$glycolysis_score, method = "pearson")
+cor_test <- cor.test(
+  scatter_data$STAT6PGSVA,
+  scatter_data$glycolysis_score,
+  method = "spearman",
+  exact = FALSE
+)
+cat(sprintf("Spearman correlation: rho = %.3f, P = %.3g\n",
+            unname(cor_test$estimate), cor_test$p.value))
 cor_label <- NULL  # correlation annotation removed
 
 p_scatter <- ggplot(scatter_data, aes(x = STAT6PGSVA, y = glycolysis_score)) +

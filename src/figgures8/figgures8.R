@@ -31,7 +31,11 @@ script_dir <- dirname(script_path)
 project_root <- normalizePath(file.path(script_dir, "../.."))
 
 # Load configuration
-config <- yaml::read_yaml(file.path(project_root, "config/paths.yaml"))
+config_path <- file.path(project_root, "config/paths.local.yaml")
+if (!file.exists(config_path)) {
+  config_path <- file.path(project_root, "config/paths.yaml")
+}
+config <- yaml::read_yaml(config_path)
 
 # Set working directory to project root
 setwd(project_root)
@@ -63,12 +67,22 @@ cat("=== Loading scFEA flux data ===\n")
 flux_file <- config$processed_data$scfea_flux_at2
 metadata_file <- config$processed_data$scfea_input_at2_metadata
 module_info_file <- config$raw_data$scfea_module_info
+strict_at2_file <- config$raw_data$seurat_at2
 
 read_table <- function(path) read_csv(path, show_col_types = FALSE)
 
 flux <- read_table(flux_file)
 meta <- read_table(metadata_file)
 mod_info <- read_table(module_info_file)
+
+if (!is.null(strict_at2_file) && file.exists(strict_at2_file)) {
+  strict_at2_cells <- colnames(readRDS(strict_at2_file))
+  meta <- meta %>% filter(cell_id %in% strict_at2_cells)
+  cat(sprintf("Restricted analysis to %d cells from strict AT2 object: %s\n",
+              nrow(meta), strict_at2_file))
+} else {
+  warning("Strict AT2 Seurat object not found; proceeding with scFEA AT2 metadata as provided.")
+}
 
 # Prepare cell_id column
 first_col <- names(flux)[1]
