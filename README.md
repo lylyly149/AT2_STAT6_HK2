@@ -210,7 +210,7 @@ Rscript src/figures10/figures10.R
 
 ## Citation
 
-If you use this code, please cite (manuscript under review):
+If you use this code, please cite (unpublished manuscript):
 
 > KAT5 Deficiency in Alveolar Type II Cells Licenses STAT6-Driven Glycolytic Reprogramming and Pulmonary Fibrosis. [Journal]. [Year].
 
