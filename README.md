@@ -212,7 +212,7 @@ Rscript src/figures10/figures10.R
 
 If you use this code, please cite (manuscript under review):
 
-> STAT6-mediated glycolysis reprogramming in AT2 cells contributes to idiopathic pulmonary fibrosis. [Journal]. [Year].
+> KAT5 Deficiency in Alveolar Type II Cells Licenses STAT6-Driven Glycolytic Reprogramming and Pulmonary Fibrosis. [Journal]. [Year].
 
 ## License
 
