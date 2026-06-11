@@ -204,7 +204,7 @@ Rscript src/figures10/figures10.R
 
 ### Study-specific Data
 
-- Targeted metabolomics data from STAT6 KO mice: Available upon request to the corresponding contact
+- Targeted metabolomics data from STAT6 KO mice: Available in the article's supplementary data.
 - Large scFEA inputs/flux matrices and Seurat objects are not tracked in git to keep the repository lightweight.
 - This repository is for sharing analysis code for the scientific manuscript; fully processed Seurat objects (QC, normalization, dimensionality reduction, clustering, annotations) are available from the corresponding author upon reasonable request.
 
