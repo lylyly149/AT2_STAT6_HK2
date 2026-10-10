@@ -208,9 +208,9 @@ Rscript src/figures10/figures10.R
 
 ## Citation
 
-If you use this code, please cite (unpublished manuscript):
+If you use this code, please cite:
 
-> KAT5 Deficiency in Alveolar Type II Cells Licenses STAT6-Driven Glycolytic Reprogramming and Pulmonary Fibrosis. [Journal]. [Year].
+> Yang, Y., Ling, Y., Li, J., Li, Q., Feng, Y., Xiao, J., Ma, Y. & Tao, S. Kat5 deficiency in alveolar type II cells licenses STAT6-driven glycolytic reprogramming and pulmonary fibrosis. Nature Communications 17(1), 8271 (2026). https://doi.org/10.1038/s41467-026-75317-w
 
 ## License
 
